@@ -16,7 +16,7 @@ class TwitterServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Codebird::setConsumerKey(env('TWITTER_CONSUMER_KEY'), env('TWITTER_SECRET_KEY'));
     }
 
     /**
@@ -27,7 +27,10 @@ class TwitterServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(TwitterService::class, function ($app){
-            return new CodeBirdTwitterService;
+            $cb = Codebird::getInstance();
+            $cb->setToken(env('TWITTER_ACCESS_TOKEN'), env('TWITTER_ACCESS_TOKEN_SECRET'));
+
+            return new CodeBirdTwitterService($cb);
         });
     }
 }

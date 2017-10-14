@@ -2,6 +2,7 @@
 
 use App\Services\Twitter\TwitterService;
 
-Route::get('/', function (TwitterService $twit) {
-    dd($twit);
+Route::get('/', function (TwitterService $twitter) {
+    $mentions = $twitter->getMentions();
+    dd($mentions);
 });
