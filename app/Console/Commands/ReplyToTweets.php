@@ -61,7 +61,7 @@ class ReplyToTweets extends Command
 
         $sentiments = $this->ml->classifiers->classify('cl_qkjxv9Ly', $text->toArray(), false);
         $mentions->each(function($mention, $index) use ($sentiments){
-             dispatch(new SendTweet($mention->id, $mention->user->screen_name, $mention->user->name, "I'm alive!"));
+             dispatch(new SendTweet($mention->id, $mention->user->screen_name, $mention->user->name, "How are you?"));
         });
        
     } 
