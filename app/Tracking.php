@@ -7,4 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Tracking extends Model
 {
    protected $table = 'tracking';
+
+   public function scopeLatestFirst($query){
+   		return $query->orderBy('twitter_id', 'desc');
+   }
 }
