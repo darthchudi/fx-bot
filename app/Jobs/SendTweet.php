@@ -24,7 +24,7 @@ class SendTweet implements ShouldQueue
      */
 
     
-    public function __construct($id, $handle, $name, $text )
+    public function __construct($id, $handle, $name, $text)
     {
         $this->id=$id;
         $this->handle=$handle;
@@ -39,6 +39,6 @@ class SendTweet implements ShouldQueue
      */
     public function handle(TwitterService $twitter)
     {
-        $twitter->sendTweet("@{$this->handle} Hey, {$this->name}, {$this->text}", $this->id);
+        $twitter->sendTweet("{$this->text}", $this->id);
     }
 }
