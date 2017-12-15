@@ -178,6 +178,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\TwitterServiceProvider::class,
         App\Providers\MonkeyLearnServiceProvider::class,
+        Romeroqe\Giphy\GiphyServiceProvider::class,
     ],
 
     /*
@@ -226,6 +227,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Giphy' => Romeroqe\Giphy\GiphyFacade::class,
 
     ],
 

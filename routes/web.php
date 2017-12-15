@@ -7,4 +7,8 @@ Route::get('/', function (TwitterService $twitter) {
     dd($mentions);
 });
 
-Route::get('/scrape', 'ScrappingController@Scrape');
+Route::get('/scrape', 'ScrappingController@scrape');
+
+Route::get('/gif', 'ScrappingController@tweetGif');
+
+Route::get('/gif_create', 'ScrappingController@getGif');
