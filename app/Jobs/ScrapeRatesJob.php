@@ -17,9 +17,6 @@ use App\Services\Helpers\DateHelper as Period;
 class ScrapeRatesJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    public $scrapper;
-    public $period;
-    public $presentRates= array();
     /**
      * Create a new job instance.
      *
@@ -27,7 +24,7 @@ class ScrapeRatesJob implements ShouldQueue
      */
     public function __construct()
     {
-        $this->period = new Period();
+        
     }
 
     /**
@@ -35,36 +32,24 @@ class ScrapeRatesJob implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+
+    public function handle(Scrapper $scrapper, Period $period)
     {
-        //Create a new Scrapper class and store the getCrawler() method in a crawler variable
-        $scrapper = new Scrapper();
-        $crawler = $scrapper->getCrawler();
+        //Call the function to fetch the scrapped data with our Scrapping Service class object
+        $data = $scrapper->getRates();
 
-
-        //Pick out nodes containing rates from the retrieved crawler object
-        $this->presentRates['date']= $crawler->filter('body > div.wrapper-home > div.home-section > div > div.lagos-market-rates > div > div.lagos-inner-holder > div.table-grid > table > tbody > tr:nth-child(1) > td.table-col.datalist')->text();
-
-        $this->presentRates['dollars'] = $crawler->filter('body > div.wrapper-home > div.home-section > div > div.lagos-market-rates > div > div.lagos-inner-holder > div.table-grid > table > tbody > tr:nth-child(1) > td:nth-child(2)')->text();
-        
-        $this->presentRates['pounds'] = $crawler->filter('body > div.wrapper-home > div.home-section > div > div.lagos-market-rates > div > div.lagos-inner-holder > div.table-grid > table > tbody > tr:nth-child(1) > td:nth-child(3)')->text();
-
-        $this->presentRates['euros']=$crawler->filter('body > div.wrapper-home > div.home-section > div > div.lagos-market-rates > div > div.lagos-inner-holder > div.table-grid > table > tbody > tr:nth-child(1) > td:nth-child(4)')->text();
-
-        $this->period=$this->period->getPeriod();
+        $period=$period->getPeriod();
 
 
         //Store current rates into database
         Rate::create([
-          'rates_date'=>$this->presentRates['date'],
-          'dollars'=>$this->presentRates['dollars'],
-          'pounds'=>$this->presentRates['pounds'],
-          'euros'=>$this->presentRates['euros'],
-          'time_period'=>$this->period
+          'rates_date'=>$data['date'],
+          'dollars'=>$data['dollars'],
+          'pounds'=>$data['pounds'],
+          'time_period'=>$period
         ]);
 
-        echo "Dollars: {$this->presentRates['dollars']}, Pounds: {$this->presentRates['pounds']}, 
-            Euros: {$this->presentRates['euros']}, Time Period: {$this->period}";
+        echo "Dollars: {$data['dollars']}, Pounds: {$data['pounds']}, Time Period: {$period}";
     }
 
 }

@@ -36,54 +36,21 @@ class ScrappingController extends Controller
     }
   }
 
+  public function scrape(){
+    $data = [];
+    $html = file_get_contents('https://abokifx.com/');
+    $crawler = new Crawler($html);
+    $row = $crawler->filterXPath('//table/thead')->nextAll()->filterXPath('//tr');
+    $data['date'] = $row->filterXPath('//td')->eq(0)->text();
+    $data['dollars'] = $row->filterXPath('//td')->eq(1)->text();
+    $data['pounds'] = $row->filterXPath('//td')->eq(2)->text();
+
+    dd($data);
+
+  }
+
   public function tweetGif(){
     $twitter->tweetGif();
-    // $string = "361 / 375*";
-    // dd(substr($string, 6, 3));
-  }
-
-
-  public function scrape(){
-  	$client = Client::getInstance();
-  	$client->getEngine()->setPath('../bin/phantomjs');
-  	$doc = new \DOMDocument();
-  	$request = $client->getMessageFactory()->createRequest('https://abokifx.com/', 'GET');
-  	$response = $client->getMessageFactory()->createResponse();
-  	$client->send($request, $response);
-    libxml_use_internal_errors(true);
-  	$doc->loadHTML($response->getContent());
-    libxml_use_internal_errors(false);
-  	$html = $doc->saveHTML();
-  	$crawler = new Crawler($html);
-
-  	$this->presentRates['date']= $crawler->filter('body > div.wrapper-home > div.home-section > div > div.lagos-market-rates > div > div.lagos-inner-holder > div.table-grid > table > tbody > tr:nth-child(1) > td.table-col.datalist')->text();
-
-  	$this->presentRates['dollars'] = $crawler->filter('body > div.wrapper-home > div.home-section > div > div.lagos-market-rates > div > div.lagos-inner-holder > div.table-grid > table > tbody > tr:nth-child(1) > td:nth-child(2)')->text();
- 		
- 		$this->presentRates['pounds'] = $crawler->filter('body > div.wrapper-home > div.home-section > div > div.lagos-market-rates > div > div.lagos-inner-holder > div.table-grid > table > tbody > tr:nth-child(1) > td:nth-child(3)')->text();
-
-    $this->presentRates['euros']=$crawler->filter('body > div.wrapper-home > div.home-section > div > div.lagos-market-rates > div > div.lagos-inner-holder > div.table-grid > table > tbody > tr:nth-child(1) > td:nth-child(4)')->text();
-
- 		echo 'Date: '.$this->presentRates['date'].'<br/>';
- 		echo 'Dollars: '.$this->presentRates['dollars'].'<br/>';
- 		echo 'Pounds: '.$this->presentRates['pounds'];
-    echo 'Euros: '.$this->presentRates['euros'];
-    $this->save();
   } 
-
-  public function save(){
-    $exists = Rate::where('date', $this->presentRates['date']);
-    if($exists){
-      return 'Record exists already';
-    }
-    else{
-      Rate::create([
-        'rates_date'=>$this->presentRates['date'],
-        'dollars'=>$this->presentRates['dollars'],
-        'pounds'=>$this->presentRates['pounds'],
-        'euros'=>$this->presentRates['euros']
-      ]);
-    }
-  }
       
 }

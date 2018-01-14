@@ -13,7 +13,6 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\ReplyToTweets::class,
         Commands\ScrapeRates::class,
         Commands\TweetRate::class,
         Commands\GetGif::class,

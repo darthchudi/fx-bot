@@ -18,7 +18,6 @@ class CreateRatesTable extends Migration
             $table->string('rates_date');
             $table->string('dollars');
             $table->string('pounds');
-            $table->string('euros');
             $table->string('time_period');
             $table->timestamps();
         });

@@ -177,7 +177,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\TwitterServiceProvider::class,
-        App\Providers\MonkeyLearnServiceProvider::class,
         Romeroqe\Giphy\GiphyServiceProvider::class,
     ],
 
