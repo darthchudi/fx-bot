@@ -7,8 +7,9 @@ use Goutte\Client as Goutte;
 use Symfony\Component\DomCrawler\Crawler as Crawler;
 use GuzzleHttp\Client as GuzzleClient;
 use JonnyW\PhantomJs\Client as Client;
-use App\Rate;
 use App\Services\Twitter\TwitterService;
+use App\Services\Helpers\DateHelper as Period;
+use App\Services\Helpers\FilterHelper;
 
 use Giphy;
 
@@ -28,15 +29,13 @@ class ScrappingController extends Controller
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
       $curlData = curl_exec ($ch);
       curl_close ($ch);
-
       $downloadPath = __DIR__."/../../../gifs/screaming_".$count.".gif";
       file_put_contents($downloadPath, $curlData);
-
       $count+=1;
     }
   }
 
-  public function scrape(){
+  public function scrape(TwitterService $twitter, Period $period, FilterHelper $filter){
     $data = [];
     $html = file_get_contents('https://abokifx.com/');
     $crawler = new Crawler($html);
@@ -45,12 +44,17 @@ class ScrappingController extends Controller
     $data['dollars'] = $row->filterXPath('//td')->eq(1)->text();
     $data['pounds'] = $row->filterXPath('//td')->eq(2)->text();
 
-    dd($data);
+    $period = $period->getPeriod();
+    $dollars = $filter->removeAsteriks($data['dollars']);
 
-  }
+    $twitter->tweetDollars($dollars, $period);
 
-  public function tweetGif(){
-    $twitter->tweetGif();
-  } 
-      
+  }  
+
+
+  public function heh(FilterHelper $filter){
+    $data = '365 / 365';
+    $filter->removeAsteriks($data);
+  }  
+
 }

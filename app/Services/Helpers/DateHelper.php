@@ -26,4 +26,8 @@ class DateHelper{
     return $period;
 
   }
+
+  public function getDay($date){
+    //Function to determine what day it is
+  }
 }

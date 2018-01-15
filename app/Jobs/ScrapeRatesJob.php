@@ -9,7 +9,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Http\Request;
 use Symfony\Component\DomCrawler\Crawler as Crawler;
-use JonnyW\PhantomJs\Client;
 use App\Rate;
 use App\Services\Scrapper\ScrappingService as Scrapper;
 use App\Services\Helpers\DateHelper as Period;
@@ -38,6 +37,7 @@ class ScrapeRatesJob implements ShouldQueue
         //Call the function to fetch the scrapped data with our Scrapping Service class object
         $data = $scrapper->getRates();
 
+        //Function to determine what time of the day it is
         $period=$period->getPeriod();
 
 

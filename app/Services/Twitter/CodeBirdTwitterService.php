@@ -20,7 +20,7 @@ class CodeBirdTwitterService implements TwitterService{
 	}
 
 	//Function to tweet Rates without GIF
-	public function tweetRates($text, $inReplyTo=null){
+	public function tweetRates($text){
 		$params['status']=$text;
 		try{
 			$this->client->statuses_update($params);
@@ -28,6 +28,67 @@ class CodeBirdTwitterService implements TwitterService{
 			return $this->error('Unable to send tweet :(');
 		}
 	}
+
+	public function tweetDollars($dollar, $period){
+		//Set Tweet Status[Content]
+		$status = "Good {$period}, a dollar costs is N{$dollar}";
+
+		//Select a random gif
+		$gif = array_rand($this->gifs, 1);
+
+		//Set Path to GIF file
+		$file = base_path().'/gifs/screaming_'.$gif.'.gif';
+
+		//Upload GIF File to Twitter
+		$reply = $this->client->media_upload([
+			'media'=>$file
+		]);
+
+		//Get Uploaded GIF file media ID
+		$media_id = $reply->media_id_string;
+
+
+		//Send Tweet of Exchange Rate along with GIF media ID
+		$reply = $this->client->statuses_update([
+			'status'=> $status,
+			'media_ids'=>$media_id
+		]);
+
+		if($reply){
+			echo 'Yes!';
+		}
+		else{
+			echo 'No';
+		}
+	}
+
+	public function tweetPounds($pound, $period){
+		//Set Tweet Status[Content]
+		$status = "Good {$period}, a pound is {$pound}";
+
+		//Select a random gif
+		$gif = array_rand($this->gifs, 1);
+
+		//Set Path to GIF file
+		$file = base_path().'/gifs/screaming_'.$gif.'.gif';
+
+		//Upload GIF File to Twitter
+		$reply = $this->client->media_upload([
+			'media'=>$file
+		]);
+
+		//Get Uploaded GIF file media ID
+		$media_id = $reply->media_id_string;
+
+
+		//Send Tweet of Exchange Rate along with GIF media ID
+		$reply = $this->client->statuses_update([
+			'status'=> $status,
+			'media_ids'=>$media_id
+		]);
+	}
+
+
 
 	//Function to tweet rates with GIF
 	public function tweetGif(){

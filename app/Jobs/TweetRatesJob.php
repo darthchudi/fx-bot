@@ -1,15 +1,15 @@
 <?php
 
 namespace App\Jobs;
-
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use App\Services\Twitter\TwitterService;
-
-use App\Rate;
+use App\Services\Helpers\FilterHelper;
+use App\Services\Scrapper\ScrappingService as Scrapper;
+use App\Services\Helpers\DateHelper as Period;
 
 class TweetRatesJob implements ShouldQueue
 {
@@ -32,16 +32,18 @@ class TweetRatesJob implements ShouldQueue
      *
      * @return void
      */
-    public function handle(TwitterService $twitter, Rate $rate)
+    public function handle(TwitterService $twitter, FilterHelper $filter, Scrapper $scrapper, Period $period)
     {
-        //Get Latest Rate
-        $currentRate = $rate->latestFirst()->first();
-        $dollars = $currentRate->dollars;
-        $dollars = substr($dollars, 6, 3);
-        $pounds = substr($currentRate->pounds, 6, 3);
-        $period = $currentRate->time_period;
+        //Call the function to fetch the scrapped data with our Scrapping Service class object
+        $data = $scrapper->getRates();
 
+        //Function to determine what time of the day it is
+        $period=$period->getPeriod();
 
-        $twitter->tweetGif();
+        //Apply the filter to clean the data
+        $dollars = $filter->removeAsteriks($data['dollars']);
+        $pounds = $filter->removeAsteriks($data['pounds']);
+
+        $twitter->tweetDollars($dollars, $period);
     }
 }
