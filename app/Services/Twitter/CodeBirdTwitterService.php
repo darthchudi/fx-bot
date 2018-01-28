@@ -14,47 +14,47 @@ class CodeBirdTwitterService implements TwitterService{
 	public function __construct(Codebird $client){
 		$this->client= $client;
 
-		for($i=1; $i<=22; $i++){
+		for($i=1; $i<=24; $i++){
 			$this->gifs[] = $i;
 		}
 	}
 
-	public function tweet($rate, $period, $currency){
+	public function tweet($dollars, $pounds, $period){
 		//Set Tweet Status[Content]
-		if($currency=='dollars'){
-			$status = "Good {$period}, a dollar costs N{$rate}";
-		}
-		else if($currency=='pounds'){
-			$status = "Good {$period}, a pound costs N{$rate}";
-		}
+		$dollarTweet = "Good {$period}, a dollar costs N{$dollars}";
+		$poundTweet = "Good {$period}, a pound costs N{$pounds}";
 
 		//Select a random gif
 		$gif = array_rand($this->gifs, 1);
 
 		//Set Path to GIF file
-		$file = base_path().'/gifs/screaming_'.$gif.'.gif';
+		$file = base_path().'/gifs/screaming_'.$gif.'.gif';;
 
 		//Upload GIF File to Twitter
 		$reply = $this->client->media_upload([
 			'media'=>$file
 		]);
 
+		echo 'Worked here';
+
+		$media_id = [];
+
 		//Get Uploaded GIF file media ID
-		$media_id = $reply->media_id_string;
+		$media_id[] = $reply->media_id_string;
 
-
+		dd($media_id);
 		//Send Tweet of Exchange Rate along with GIF media ID
-		$reply = $this->client->statuses_update([
-			'status'=> $status,
-			'media_ids'=>$media_id
-		]);
+		// $dTweet = $this->client->statuses_update([
+		// 	'status'=> $dollarTweet,
+		// 	'media_id'=>$media
+		// ]);
 
-		if($reply){
-			echo 'Yes!';
-		}
-		else{
-			echo 'No';
-		}
+		// if($dTweet){
+		// 	echo 'Yes!';
+		// }
+		// else{
+		// 	echo 'No';
+		// }
 	}
 
 	// public function tweetPounds($pound, $period){

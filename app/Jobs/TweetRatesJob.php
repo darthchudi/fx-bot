@@ -44,9 +44,6 @@ class TweetRatesJob implements ShouldQueue
         $dollars = $filter->removeAsteriks($data['dollars']);
         $pounds = $filter->removeAsteriks($data['pounds']);
 
-        $twitter->tweet($dollars, $period, 'dollars');
-        $twitter->tweet($pounds, $period, 'pounds');
-        // $twitter->tweetDollars($dollars, $period);
-
+        $twitter->tweet($dollars, $pounds, $period);
     }
 }
