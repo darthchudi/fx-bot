@@ -14,76 +14,64 @@ class CodeBirdTwitterService implements TwitterService{
 	public function __construct(Codebird $client){
 		$this->client= $client;
 
-		for($i=1; $i<=24; $i++){
+		for($i=1; $i<=23; $i++){
 			$this->gifs[] = $i;
 		}
 	}
 
 	public function tweet($dollars, $pounds, $period){
 		//Set Tweet Status[Content]
-		$dollarTweet = "Good {$period}, a dollar costs N{$dollars}";
-		$poundTweet = "Good {$period}, a pound costs N{$pounds}";
+		$dollarString = "Good {$period}, a dollar costs N{$dollars}";
+		$poundString = "Good {$period}, a pound costs N{$pounds}";
 
+		$dollarTweet = $this->upload($dollarString);
+		$poundTweet = $this->upload($poundString);
+	}
+
+	public function upload($tweet){
 		//Select a random gif
 		$gif = array_rand($this->gifs, 1);
 
 		//Set Path to GIF file
-		$file = base_path().'/gifs/screaming_'.$gif.'.gif';;
+		$file = public_path()."/gifs/screaming_".$gif.'.gif';
+		$sizeBytes = filesize($file);
+		$fp = fopen($file, 'r');
 
 		//Upload GIF File to Twitter
 		$reply = $this->client->media_upload([
-			'media'=>$file
+			'command'=> 'INIT',
+			'media_type' =>'image/gif',
+			'total_bytes'=>$sizeBytes
 		]);
 
-		echo 'Worked here';
+		$media_id = $reply->media_id_string;
 
-		$media_id = [];
+		$segment_id = 0;
 
-		//Get Uploaded GIF file media ID
-		$media_id[] = $reply->media_id_string;
+		while(!feof($fp)){
+			$chunk = fread($fp, 1048576);
 
-		dd($media_id);
-		//Send Tweet of Exchange Rate along with GIF media ID
-		// $dTweet = $this->client->statuses_update([
-		// 	'status'=> $dollarTweet,
-		// 	'media_id'=>$media
-		// ]);
+			$reply = $this->client->media_upload([
+				'command'=>'APPEND',
+				'media_id'=>$media_id,
+				'segment_index'=>$segment_id,
+				'media'=>$chunk
+			]);
+			$segment_id++;
+		}
 
-		// if($dTweet){
-		// 	echo 'Yes!';
-		// }
-		// else{
-		// 	echo 'No';
-		// }
+		fclose($fp);
+
+		$reply = $this->client->media_upload([
+			'command'=>'FINALIZE',
+			'media_id'=>$media_id
+		]);
+
+		$tweet = $this->client->statuses_update([
+			'status'=> $tweet,
+			'media_ids'=>$media_id
+		]);
 	}
 
-	// public function tweetPounds($pound, $period){
-	// 	//Set Tweet Status[Content]
-	// 	$content = "Good {$period}, a pound costs N{$pound}";
-
-	// 	//Select a random gif
-	// 	$gif = array_rand($this->gifs, 1);
-
-	// 	//Set Path to GIF file
-	// 	$file = base_path().'/gifs/screaming_'.$gif.'.gif';
-
-	// 	//Upload GIF File to Twitter
-	// 	$reply = $this->client->media_upload([
-	// 		'media'=>$file
-	// 	]);
-
-	// 	//Get Uploaded GIF file media ID
-	// 	$media_id = $reply->media_id_string;
-
-
-	// 	//Send Tweet of Exchange Rate along with GIF media ID
-	// 	$reply = $this->client->statuses_update([
-	// 		'status'=> $content,
-	// 		'media_id'=>$media_id
-	// 	]);
-
-	// 	if($reply){
-	// 		echo 'yes!';
-	// 	}
-	// }
+	
 }

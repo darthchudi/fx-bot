@@ -8,17 +8,17 @@ use Illuminate\Http\Request;
 class FilterHelper{
 
   public function removeAsteriks($rate){
-    list(, $data) = explode('/', $rate);
+	list(, $data) = explode('/', $rate);
 
-    if(preg_match('/.*(\*)$/', $data)){
-      $data = explode('*', $data);
-      $data = trim($data[0]);
-      return $data;
-    }
-    else{
-      $data = trim($data);
-      return $data;
-    }  
+	if(preg_match('/.*(\*)$/', $data)){
+	  $data = explode('*', $data);
+	  $data = trim($data[0]);
+	  return $data;
+	}
+	else{
+	  $data = trim($data);
+	  return $data;
+	}  
   }
 
   

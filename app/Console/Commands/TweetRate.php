@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Jobs\ScrapeRatesJob;
 use App\Jobs\TweetRatesJob;
 
 class TweetRate extends Command
