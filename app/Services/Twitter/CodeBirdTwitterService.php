@@ -26,6 +26,8 @@ class CodeBirdTwitterService implements TwitterService{
 
 		$dollarTweet = $this->upload($dollarString);
 		$poundTweet = $this->upload($poundString);
+
+		echo "Successfully tweeted dollars and pounds \n";
 	}
 
 	public function upload($tweet){

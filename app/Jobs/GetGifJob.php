@@ -33,7 +33,7 @@ class GetGifJob implements ShouldQueue
     {
         //Search for Gif using GIPHY API
         $giphy = Giphy::search('WTF');
-        $count=22;
+        $count=24;
 
         //Loop through gifs returned, perform a cURL operation and download image binary file to a GIF and save
         foreach($giphy->data as $gifs){
@@ -44,10 +44,15 @@ class GetGifJob implements ShouldQueue
             $curlData = curl_exec ($ch);
             curl_close ($ch);
 
-            $downloadPath = __DIR__."/../../gif_test/screaming_".$count.".gif";
+
+            $downloadPath = public_path()."/gifs/screaming_".$count.'.gif';
             file_put_contents($downloadPath, $curlData);
 
             $count+=1;
+
+            if($count>=44){
+                break;
+            }
         }
 
         if($curlData){
