@@ -11,6 +11,8 @@ class CodeBirdTwitterService implements TwitterService{
 
 	public function __construct(Codebird $client){
 		$this->client= $client;
+		$this->client->setConnectionTimeout(6000);
+		$this->client->setTimeout(30000);
 
 		for($i=1; $i<=46; $i++){
 			$this->gifs[] = $i;

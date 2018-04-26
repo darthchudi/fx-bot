@@ -13,7 +13,7 @@ class SchedularDaemon extends Command
      *
      * @var string
      */
-    protected $signature = 'schedule:daemon {--sleep=60}';
+    protected $signature = 'schedule:daemon {--sleep=300}';
 
     /**
      * The console command description.
