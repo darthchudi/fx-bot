@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\TweetRate::class,
         Commands\GetGif::class,
+        Commands\SchedularDaemon::class
     ];
 
     /**
@@ -25,8 +26,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        // $schedule->command('fxbot:tweet')
+        //          ->everyMinute();
     }
 
     /**

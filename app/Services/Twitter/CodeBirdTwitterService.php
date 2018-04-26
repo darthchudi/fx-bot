@@ -1,10 +1,8 @@
 <?php
 
 namespace App\Services\Twitter;
-use App\Services\Twitter\Exceptions\RateLimitExceededException;
-use App\Services\Twitter\Exceptions\UnableToTweetException;
 use Codebird\Codebird;
-use App\Rate;
+use Carbon\Carbon;
 
 class CodeBirdTwitterService implements TwitterService{
 	protected $client;
@@ -14,7 +12,7 @@ class CodeBirdTwitterService implements TwitterService{
 	public function __construct(Codebird $client){
 		$this->client= $client;
 
-		for($i=1; $i<=23; $i++){
+		for($i=1; $i<=46; $i++){
 			$this->gifs[] = $i;
 		}
 	}
@@ -27,7 +25,8 @@ class CodeBirdTwitterService implements TwitterService{
 		$dollarTweet = $this->upload($dollarString);
 		$poundTweet = $this->upload($poundString);
 
-		echo "Successfully tweeted dollars and pounds \n";
+		$presentTime = Carbon::now()->format('d-m-Y H:i:s');
+		echo "Successfully tweeted at $presentTime \n";
 	}
 
 	public function upload($tweet){
