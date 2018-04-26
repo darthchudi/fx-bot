@@ -89,7 +89,7 @@ class ScrappingController extends Controller
       
       $check_rate = $rate->where('Date',date("Y-m-d"))->first();
       if($check_rate){
-        $this->update_rate($check_rate);
+        $this->update_rate($check_rate,$date,$dollar_buy,$dollar_sell,$pounds_buy,$pounds_sell);
       }else{
         $rate->Date =  $date;
         $rate->Dollar_BUY = $dollar_buy;
@@ -106,12 +106,21 @@ class ScrappingController extends Controller
     $check_rate = $rate->get();
   }
 
-  public function update_rate($data_rate){
+  public function update_rate($data_rate,$date,$dollar_buy,$dollar_sell,$pounds_buy,$pounds_sell){
     $rate = new Rates();
-    $time = str_replace("pm", "", date("h:i:sa"));
-    $timestamp = $data_rate->Date ." ".$time;
-    dd($timestamp);  
-    $check_rate = $rate->where('Date',date("Y-m-d"))->first();
+    $date = Carbon::parse($data_rate->created_at);
+    $now = Carbon::now();
+    $time_diff = $date->diffInHours($now);
+    if($time_diff >= 8){
+      $update_rate = $rate->where('Date',date("Y-m-d"));
+      $update_rate->Date =  $date;
+      $update_rate->Dollar_BUY = $dollar_buy;
+      $update_rate->Dollar_SELL = $dollar_sell;
+      $update_rate->Pounds_BUY = $pounds_buy;
+      $update_rate->Pounds_SELL =  $pounds_sell;
+      $update_rate->save();
+
+    }  
 
 
   }
