@@ -40,7 +40,7 @@ class SchedularDaemon extends Command
     public function handle()
     {
         while (true) {
-            $this->line('<info>[' . Carbon::now()->format('d-m-Y H:i:s') . ']</info> Sending Tweet');
+            $this->line('<info>[' . Carbon::now("Africa/Lagos")->format('d-m-Y H:i:s') . ']</info> Sending Tweet');
 
             $this->call('fxbot:tweet');
 
