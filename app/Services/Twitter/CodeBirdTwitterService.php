@@ -28,7 +28,7 @@ class CodeBirdTwitterService implements TwitterService{
 		$poundTweet = $this->upload($poundString);
 
 		$presentTime = Carbon::now("Africa/Lagos")->format('d-m-Y H:i:s');
-		echo "Successfully tweeted at $presentTime \n";
+		echo "Successfully tweeted at $presentTime by \n";
 	}
 
 	public function upload($tweet){

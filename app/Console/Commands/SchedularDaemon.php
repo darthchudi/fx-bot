@@ -13,14 +13,14 @@ class SchedularDaemon extends Command
      *
      * @var string
      */
-    protected $signature = 'schedule:daemon {--sleep=1800}';
+    protected $signature = 'schedule:daemon {--sleep=3600}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Call the scheduler every minute.';
+    protected $description = 'Call the scheduler every hour.';
 
     /**
      * Create a new command instance.
@@ -40,9 +40,11 @@ class SchedularDaemon extends Command
     public function handle()
     {
         while (true) {
-            $this->line('<info>[' . Carbon::now("Africa/Lagos")->format('d-m-Y H:i:s') . ']</info> Sending Tweet');
-
-            $this->call('fxbot:tweet');
+            $presentHour = Carbon::now("Africa/Lagos")->hour;
+            if($presentHour==10 || $presentHour==14 || $presentHour== 20){
+                $this->line('<info>[' . Carbon::now("Africa/Lagos")->format('d-m-Y H:i:s') . ']</info> Sending Tweet');
+                $this->call('fxbot:tweet');   
+            }
 
             sleep($this->option('sleep'));
         }

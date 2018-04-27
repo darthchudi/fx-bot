@@ -15,6 +15,5 @@ use Giphy;
 
 class ScrappingController extends Controller
 {
-  
 
 }
