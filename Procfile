@@ -1,1 +1,1 @@
-web: /app/artisan serve
+web: $(composer config bin-dir)/heroku-php-nginx
