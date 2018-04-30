@@ -12,6 +12,11 @@ return [
     | you may use many connections at once using the Database library.
     |
     */
+    $url = parse_url(getenv("DATABASE_URL")),
+    $host = $url["host"],
+    $username = $url["user"],
+    $password = $url["pass"],
+    $database = substr($url["path"], 1),
 
     'default' => env('DB_CONNECTION', 'pgsql'),
 
@@ -56,11 +61,11 @@ return [
 
         'pgsql' => [
             'driver' => 'pgsql',
-            'host' => env('DB_HOST', 'ec2-23-23-142-5.compute-1.amazonaws.com'),
+            'host' => env('DB_HOST', $host),
             'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'ddkqsiqrp6olll'),
-            'username' => env('DB_USERNAME', 'jdlcsicppxzdeh'),
-            'password' => env('DB_PASSWORD', 'c0af3009523fcbf443b58a178624ed38a247d0f987740a5fb94072ca40a6ee62'),
+            'database' => env('DB_DATABASE', $database),
+            'username' => env('DB_USERNAME', $username),
+            'password' => env('DB_PASSWORD', $password),
             'charset' => 'utf8',
             'prefix' => '',
             'schema' => 'public',
