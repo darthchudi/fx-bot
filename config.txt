@@ -1,0 +1,3 @@
+=== whispering-mesa-49488 Config Vars
+APP_KEY:      base64:yEU10f3X6+urAfXWy4YeybvsfGqYjpJnnFeXow67DYM=
+DATABASE_URL: postgres://jdlcsicppxzdeh:c0af3009523fcbf443b58a178624ed38a247d0f987740a5fb94072ca40a6ee62@ec2-23-23-142-5.compute-1.amazonaws.com:5432/ddkqsiqrp6olll
