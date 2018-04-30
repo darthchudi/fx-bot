@@ -1,0 +1,27 @@
+{
+    "name": "romeroqe/giphy-and-stickers",
+    "type": "library",
+    "description": "A package that provides an interface between Laravel and Giphy API, includes Gifs and Stickers.",
+    "keywords": ["Laravel", "PHP", "Giphy", "API", "Gif", "Sticker"],
+    "version": "1",
+    "homepage": "https://github.com/romeroqe/giphy-and-stickers",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Emmanuel Romero",
+            "email": "romeroqe.93@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Romeroqe\\Giphy\\": "src/",
+            "Romeroqe\\Stickers\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
