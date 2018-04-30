@@ -1,1 +1,1 @@
-web: /app/artisan migrate
+web: /app/artisan serve
