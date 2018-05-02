@@ -65,10 +65,10 @@
             "@php artisan package:discover"
         ],
         "post-install-cmd": [
+            "PhantomInstaller\\Installer::installPhantomJS",
              "php artisan clear-compiled",
              "php artisan optimize",
-             "chmod -R 777 /app/",
-            "PhantomInstaller\\Installer::installPhantomJS",
+             "chmod -R 777 /app/"
         ],
         "post-update-cmd": [
             "PhantomInstaller\\Installer::installPhantomJS"
