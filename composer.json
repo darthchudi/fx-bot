@@ -66,6 +66,9 @@
         ],
         "post-install-cmd": [
             "PhantomInstaller\\Installer::installPhantomJS"
+             "php artisan clear-compiled",
+             "php artisan optimize",
+             "chmod -R 777 app/storage"
         ],
         "post-update-cmd": [
             "PhantomInstaller\\Installer::installPhantomJS"
