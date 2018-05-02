@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\TweetRate::class,
         Commands\GetGif::class,
+        Commands\CallRoute::class,
     ];
 
     /**
@@ -27,6 +28,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+
+        $schedule->command('route:call /scrape')->everyMinute();
     }
 
     /**
