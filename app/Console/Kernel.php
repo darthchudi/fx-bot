@@ -26,8 +26,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('fxbot:tweet')
-        //          ->everyMinute();
+        $schedule->command('fxbot:tweet')->withoutOverlapping()->hourlyAt(10)->timezone('Africa/Lagos');
     }
 
     /**

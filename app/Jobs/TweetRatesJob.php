@@ -10,6 +10,7 @@ use App\Services\Twitter\TwitterService;
 use App\Services\Helpers\FilterHelper;
 use App\Services\Scrapper\ScrappingService as Scrapper;
 use App\Services\Helpers\DateHelper as Period;
+use Carbon\Carbon;
 
 class TweetRatesJob implements ShouldQueue
 {
@@ -34,16 +35,26 @@ class TweetRatesJob implements ShouldQueue
      */
     public function handle(TwitterService $twitter, FilterHelper $filter, Scrapper $scrapper, Period $period)
     {
-        //Call the function to fetch the scrapped data with our Scrapping Service class object
-        $data = $scrapper->getRates();
+        $presentHour = Carbon::now("Africa/Lagos")->hour;
 
-        //Function to determine what time of the day it is
-        $period=$period->getPeriod();
+        if($presentHour==10 || $presentHour==14 || $presentHour== 20){
+            echo '['.Carbon::now("Africa/Lagos")->format('d-m-Y H:i:s').'] Sending Tweet';
 
-        //Apply the filter to clean the data
-        $dollars = $filter->removeAsteriks($data['dollars']);
-        $pounds = $filter->removeAsteriks($data['pounds']);
+            //Call the function to fetch the scrapped data with our Scrapping Service class object
+            $data = $scrapper->getRates();
 
-        $twitter->tweet($dollars, $pounds, $period);
+            //Function to determine what time of the day it is
+            $period=$period->getPeriod();
+
+            //Apply the filter to clean the data
+            $dollars = $filter->removeAsteriks($data['dollars']);
+            $pounds = $filter->removeAsteriks($data['pounds']);
+
+            $twitter->tweet($dollars, $pounds, $period);    
+        } 
+        else{
+            echo "Not yet time to tweet!";
+        }
+
     }
 }
